@@ -1,0 +1,16 @@
+ru/yandex/practicum/bank/transfer/security/SecurityConfig.class
+ru/yandex/practicum/bank/transfer/service/NotificationEvent.class
+ru/yandex/practicum/bank/transfer/client/OAuthAccountsClient$AmountDto.class
+ru/yandex/practicum/bank/transfer/client/OAuthAccountsClient.class
+ru/yandex/practicum/bank/transfer/client/OAuth2WebClientConfig.class
+ru/yandex/practicum/bank/transfer/api/dto/ApiErrorResponse.class
+ru/yandex/practicum/bank/transfer/service/TransferService.class
+ru/yandex/practicum/bank/transfer/api/dto/TransferRequest.class
+ru/yandex/practicum/bank/transfer/api/TransferController.class
+ru/yandex/practicum/bank/transfer/client/NotificationsClient.class
+ru/yandex/practicum/bank/transfer/TransferApplication.class
+ru/yandex/practicum/bank/transfer/client/NoopNotificationsClient.class
+ru/yandex/practicum/bank/transfer/api/ApiExceptionHandler.class
+ru/yandex/practicum/bank/transfer/client/NoopAccountsClient.class
+ru/yandex/practicum/bank/transfer/client/OAuthNotificationsClient.class
+ru/yandex/practicum/bank/transfer/client/AccountsClient.class

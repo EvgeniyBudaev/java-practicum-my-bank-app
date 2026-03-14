@@ -1,0 +1,4 @@
+ru/yandex/practicum/bank/cash/CashApplicationTests.class
+ru/yandex/practicum/bank/cash/service/CashServiceTest.class
+ru/yandex/practicum/bank/cash/api/CashControllerIntegrationTest.class
+ru/yandex/practicum/bank/cash/contracts/AccountsStubsConsumerTest.class

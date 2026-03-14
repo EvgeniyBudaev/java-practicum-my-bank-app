@@ -1,0 +1,5 @@
+ru/yandex/practicum/bank/accounts/AccountsApplicationTests.class
+ru/yandex/practicum/bank/accounts/service/AccountServiceTest.class
+ru/yandex/practicum/bank/accounts/contract/BaseContractTest.class
+ru/yandex/practicum/bank/accounts/contract/ContractVerifierTest.class
+ru/yandex/practicum/bank/accounts/api/AccountsControllerIntegrationTest.class
