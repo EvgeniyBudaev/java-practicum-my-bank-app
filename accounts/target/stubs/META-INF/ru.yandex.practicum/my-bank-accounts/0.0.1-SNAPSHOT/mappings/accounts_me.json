@@ -1,0 +1,16 @@
+{
+  "id" : "e36d5838-52be-4c80-af3a-7c65c9a6ee2a",
+  "request" : {
+    "urlPath" : "/api/accounts/me",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "{\"name\":\"testuser\",\"birthdate\":\"1990-01-01\",\"sum\":0}",
+    "headers" : {
+      "Content-Type" : "application/json"
+    },
+    "transformers" : [ "response-template", "spring-cloud-contract" ]
+  },
+  "uuid" : "e36d5838-52be-4c80-af3a-7c65c9a6ee2a"
+}

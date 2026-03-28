@@ -1,0 +1,8 @@
+META-INF/ru.yandex.practicum/my-bank-accounts/0.0.1-SNAPSHOT/mappings/accounts_me.json
+META-INF/ru.yandex.practicum/my-bank-accounts/0.0.1-SNAPSHOT/mappings/accounts_recipients.json
+META-INF/ru.yandex.practicum/my-bank-accounts/0.0.1-SNAPSHOT/mappings/accounts_deposit.json
+META-INF/ru.yandex.practicum/my-bank-accounts/0.0.1-SNAPSHOT/mappings/accounts_withdraw_not_enough.json
+META-INF/ru.yandex.practicum/my-bank-accounts/0.0.1-SNAPSHOT/contracts/accounts_withdraw_not_enough.groovy
+META-INF/ru.yandex.practicum/my-bank-accounts/0.0.1-SNAPSHOT/contracts/accounts_deposit.groovy
+META-INF/ru.yandex.practicum/my-bank-accounts/0.0.1-SNAPSHOT/contracts/accounts_recipients.groovy
+META-INF/ru.yandex.practicum/my-bank-accounts/0.0.1-SNAPSHOT/contracts/accounts_me.groovy

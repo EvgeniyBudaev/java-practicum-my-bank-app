@@ -1,0 +1,20 @@
+{
+  "id" : "79900460-3d65-4963-a59b-04bd16b4bea3",
+  "request" : {
+    "urlPath" : "/internal/accounts/testuser/deposit",
+    "method" : "POST",
+    "headers" : {
+      "Content-Type" : {
+        "matches" : "application/json.*"
+      }
+    },
+    "bodyPatterns" : [ {
+      "matchesJsonPath" : "$[?(@.['amount'] == 500)]"
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "transformers" : [ "response-template", "spring-cloud-contract" ]
+  },
+  "uuid" : "79900460-3d65-4963-a59b-04bd16b4bea3"
+}

@@ -1,0 +1,28 @@
+{
+  "id" : "cc95a5e7-5669-489d-b8ad-a606f9a786aa",
+  "request" : {
+    "urlPath" : "/api/notifications",
+    "method" : "POST",
+    "headers" : {
+      "Content-Type" : {
+        "matches" : "application/json.*"
+      }
+    },
+    "bodyPatterns" : [ {
+      "matchesJsonPath" : "$[?(@.['type'] == 'CASH_IN')]"
+    }, {
+      "matchesJsonPath" : "$[?(@.['amount'] == 500)]"
+    }, {
+      "matchesJsonPath" : "$[?(@.['actorLogin'] == 'user1')]"
+    }, {
+      "matchesJsonPath" : "$[?(@.['targetLogin'] == null)]"
+    }, {
+      "matchesJsonPath" : "$[?(@.['occurredAt'] =~ /^\\s*\\S[\\S\\s]*/)]"
+    } ]
+  },
+  "response" : {
+    "status" : 200,
+    "transformers" : [ "response-template", "spring-cloud-contract" ]
+  },
+  "uuid" : "cc95a5e7-5669-489d-b8ad-a606f9a786aa"
+}

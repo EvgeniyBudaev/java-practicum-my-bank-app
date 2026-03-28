@@ -1,0 +1,48 @@
+package ru.yandex.practicum.bank.cash.client;
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.*;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@Configuration
+@ConditionalOnProperty(name = "bank.security.enabled", havingValue = "true", matchIfMissing = true)
+public class OAuth2WebClientConfig {
+
+    @Bean
+    @LoadBalanced
+    public WebClient.Builder loadBalancedWebClientBuilder() {
+        return WebClient.builder();
+    }
+
+    @Bean
+    public OAuth2AuthorizedClientManager authorizedClientManager(
+            ClientRegistrationRepository registrations,
+            OAuth2AuthorizedClientService clientService
+    ) {
+        OAuth2AuthorizedClientProvider provider =
+                OAuth2AuthorizedClientProviderBuilder.builder().clientCredentials().build();
+
+        AuthorizedClientServiceOAuth2AuthorizedClientManager manager =
+                new AuthorizedClientServiceOAuth2AuthorizedClientManager(registrations, clientService);
+
+        manager.setAuthorizedClientProvider(provider);
+        return manager;
+    }
+
+    @Bean
+    public WebClient serviceWebClient(WebClient.Builder loadBalancedWebClientBuilder,
+                                      OAuth2AuthorizedClientManager manager) {
+        ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2 =
+                new ServletOAuth2AuthorizedClientExchangeFilterFunction(manager);
+        oauth2.setDefaultClientRegistrationId("cash-service");
+
+        return loadBalancedWebClientBuilder
+                .apply(oauth2.oauth2Configuration())
+                .build();
+    }
+}

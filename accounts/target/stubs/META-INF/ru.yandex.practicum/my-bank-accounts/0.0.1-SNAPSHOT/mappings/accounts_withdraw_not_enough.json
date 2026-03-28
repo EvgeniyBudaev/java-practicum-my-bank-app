@@ -1,0 +1,24 @@
+{
+  "id" : "44e88fd2-51d2-4330-80ed-947bb98b173e",
+  "request" : {
+    "urlPath" : "/internal/accounts/oleg/withdraw",
+    "method" : "POST",
+    "headers" : {
+      "Content-Type" : {
+        "matches" : "application/json.*"
+      }
+    },
+    "bodyPatterns" : [ {
+      "matchesJsonPath" : "$[?(@.['amount'] == 999999)]"
+    } ]
+  },
+  "response" : {
+    "status" : 409,
+    "body" : "{\"errors\":[\"Недостаточно средств на счету\"],\"message\":\"QKLKYGUHGYIUDPHRKWAB\"}",
+    "headers" : {
+      "Content-Type" : "application/json"
+    },
+    "transformers" : [ "response-template", "spring-cloud-contract" ]
+  },
+  "uuid" : "44e88fd2-51d2-4330-80ed-947bb98b173e"
+}

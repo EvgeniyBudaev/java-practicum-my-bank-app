@@ -1,0 +1,16 @@
+{
+  "id" : "99bd7d9c-5966-458d-938e-35888e3c5e91",
+  "request" : {
+    "urlPath" : "/api/accounts/recipients",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "[{\"login\":\"oleg\",\"name\":\"Олег\"}]",
+    "headers" : {
+      "Content-Type" : "application/json"
+    },
+    "transformers" : [ "response-template", "spring-cloud-contract" ]
+  },
+  "uuid" : "99bd7d9c-5966-458d-938e-35888e3c5e91"
+}

@@ -1,0 +1,5 @@
+ru/yandex/practicum/bank/notifications/api/dto/NotificationType.class
+ru/yandex/practicum/bank/notifications/api/dto/NotificationRequest.class
+ru/yandex/practicum/bank/notifications/api/NotificationsController.class
+ru/yandex/practicum/bank/notifications/NotificationsApplication.class
+ru/yandex/practicum/bank/notifications/security/SecurityConfig.class

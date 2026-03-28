@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: front-ui
+  config:
+    import: "optional:consul:"
+
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+
+      config:
+        enabled: true
+        prefix: config
+        default-context: application
+        format: YAML
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
