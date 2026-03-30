@@ -1,0 +1,122 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-keycloak-realm
+  labels:
+    app: keycloak
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  bank-realm.json: |
+    {
+      "realm": "bank",
+      "enabled": true,
+      "sslRequired": "none",
+      "roles": {
+        "realm": [
+          { "name": "ACCOUNTS_ACCESS", "description": "Access to Accounts API" },
+          { "name": "CASH_ACCESS", "description": "Access to Cash API" },
+          { "name": "TRANSFER_ACCESS", "description": "Access to Transfer API" },
+          { "name": "CALL_ACCOUNTS", "description": "Inter-service access to Accounts internal API" },
+          { "name": "CALL_NOTIFICATIONS", "description": "Inter-service access to Notifications API" }
+        ]
+      },
+      "users": [
+        {
+          "username": "testuser",
+          "enabled": true,
+          "firstName": "Абоба",
+          "lastName": "Тестовый",
+          "email": "testuser@bank.local",
+          "credentials": [{ "type": "password", "value": "password", "temporary": false }],
+          "realmRoles": ["ACCOUNTS_ACCESS", "CASH_ACCESS", "TRANSFER_ACCESS"]
+        },
+        {
+          "username": "petrov",
+          "enabled": true,
+          "firstName": "Петя",
+          "lastName": "Петров",
+          "email": "petrov@bank.local",
+          "credentials": [{ "type": "password", "value": "password", "temporary": false }],
+          "realmRoles": ["ACCOUNTS_ACCESS", "CASH_ACCESS", "TRANSFER_ACCESS"]
+        },
+        {
+          "username": "ivanov",
+          "enabled": true,
+          "firstName": "Иван",
+          "lastName": "Иванов",
+          "email": "ivanov@bank.local",
+          "credentials": [{ "type": "password", "value": "password", "temporary": false }],
+          "realmRoles": ["ACCOUNTS_ACCESS", "CASH_ACCESS", "TRANSFER_ACCESS"]
+        },
+        {
+          "username": "olegov",
+          "enabled": true,
+          "firstName": "Олег",
+          "lastName": "Олегов",
+          "email": "olegov@bank.local",
+          "credentials": [{ "type": "password", "value": "password", "temporary": false }],
+          "realmRoles": ["ACCOUNTS_ACCESS", "CASH_ACCESS", "TRANSFER_ACCESS"]
+        },
+        {
+          "username": "service-account-cash-service",
+          "enabled": true,
+          "serviceAccountClientId": "cash-service",
+          "realmRoles": ["CALL_ACCOUNTS", "CALL_NOTIFICATIONS"]
+        },
+        {
+          "username": "service-account-transfer-service",
+          "enabled": true,
+          "serviceAccountClientId": "transfer-service",
+          "realmRoles": ["CALL_ACCOUNTS", "CALL_NOTIFICATIONS"]
+        },
+        {
+          "username": "service-account-accounts-service",
+          "enabled": true,
+          "serviceAccountClientId": "accounts-service",
+          "realmRoles": ["CALL_NOTIFICATIONS"]
+        }
+      ],
+      "clients": [
+        {
+          "clientId": "front-ui",
+          "enabled": true,
+          "publicClient": true,
+          "directAccessGrantsEnabled": true,
+          "standardFlowEnabled": true,
+          "redirectUris": ["*"],
+          "webOrigins": ["*"],
+          "protocol": "openid-connect"
+        },
+        {
+          "clientId": "cash-service",
+          "enabled": true,
+          "publicClient": false,
+          "serviceAccountsEnabled": true,
+          "standardFlowEnabled": false,
+          "directAccessGrantsEnabled": false,
+          "secret": "cash-service-secret",
+          "protocol": "openid-connect"
+        },
+        {
+          "clientId": "transfer-service",
+          "enabled": true,
+          "publicClient": false,
+          "serviceAccountsEnabled": true,
+          "standardFlowEnabled": false,
+          "directAccessGrantsEnabled": false,
+          "secret": "transfer-service-secret",
+          "protocol": "openid-connect"
+        },
+        {
+          "clientId": "accounts-service",
+          "enabled": true,
+          "publicClient": false,
+          "serviceAccountsEnabled": true,
+          "standardFlowEnabled": false,
+          "directAccessGrantsEnabled": false,
+          "secret": "accounts-service-secret",
+          "protocol": "openid-connect"
+        }
+      ]
+    }

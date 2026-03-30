@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-cash-config
+  labels:
+    app: cash
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  SERVER_PORT: {{ .Values.service.port | quote }}
+  BANK_SECURITY_ENABLED: {{ .Values.security.enabled | quote }}
+  SPRING_CONFIG_ADDITIONAL_LOCATION: /app/config/
+  application.yml: |
+    spring:
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              issuer-uri: {{ .Values.global.keycloak.issuerUri }}
+              jwk-set-uri: {{ .Values.global.keycloak.jwkSetUri }}
+          client:
+            registration:
+              cash-service:
+                provider: keycloak
+                authorization-grant-type: client_credentials
+                client-id: {{ .Values.security.oauth2.clientId }}
+                client-secret: {{ .Values.security.oauth2.clientSecret }}
+                scope: openid
+            provider:
+              keycloak:
+                token-uri: {{ .Values.global.keycloak.tokenUri }}
+    resilience4j:
+      timelimiter:
+        configs:
+          default:
+            timeout-duration: 10s

@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-gateway-config
+  labels:
+    app: gateway
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  SERVER_PORT: {{ .Values.service.port | quote }}
+  BANK_SECURITY_ENABLED: {{ .Values.security.enabled | quote }}
+  SPRING_CONFIG_ADDITIONAL_LOCATION: /app/config/
+  application.yml: |
+    spring:
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              issuer-uri: {{ .Values.global.keycloak.issuerUri }}
+              jwk-set-uri: {{ .Values.global.keycloak.jwkSetUri }}
+      cloud:
+        gateway:
+          default-filters:
+            - TokenRelay
+          routes:
+            - id: accounts
+              uri: "http://{{ .Values.global.services.accounts.host }}:{{ .Values.global.services.accounts.port }}"
+              predicates:
+                - "Path=/api/accounts/**"
+            - id: cash
+              uri: "http://{{ .Values.global.services.cash.host }}:{{ .Values.global.services.cash.port }}"
+              predicates:
+                - "Path=/api/cash/**"
+            - id: transfer
+              uri: "http://{{ .Values.global.services.transfer.host }}:{{ .Values.global.services.transfer.port }}"
+              predicates:
+                - "Path=/api/transfers/**"
+            - id: notifications
+              uri: "http://{{ .Values.global.services.notifications.host }}:{{ .Values.global.services.notifications.port }}"
+              predicates:
+                - "Path=/api/notifications/**"

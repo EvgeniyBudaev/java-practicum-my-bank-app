@@ -1,0 +1,25 @@
+replicaCount: 1
+
+image:
+  repository: my-bank-app/notifications
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  containerPort: 8085
+
+security:
+  enabled: true
+  oauth2:
+    clientId: ""
+    clientSecret: ""
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

@@ -1,0 +1,24 @@
+replicaCount: 1
+
+image:
+  repository: my-bank-app/cash
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8083
+
+security:
+  enabled: true
+  oauth2:
+    clientId: cash-service
+    clientSecret: cash-service-secret
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-accounts-config
+  labels:
+    app: accounts
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  SERVER_PORT: {{ .Values.service.containerPort | quote }}
+  BANK_SECURITY_ENABLED: {{ .Values.security.enabled | quote }}
+  SPRING_CONFIG_ADDITIONAL_LOCATION: /app/config/
+  application.yml: |
+    spring:
+      datasource:
+        url: jdbc:postgresql://{{ .Values.database.host }}:{{ .Values.database.port }}/{{ .Values.database.name }}
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              issuer-uri: {{ .Values.global.keycloak.issuerUri }}
+              jwk-set-uri: {{ .Values.global.keycloak.jwkSetUri }}
+          client:
+            registration:
+              accounts-service:
+                provider: keycloak
+                authorization-grant-type: client_credentials
+                client-id: {{ .Values.security.oauth2.clientId }}
+                client-secret: {{ .Values.security.oauth2.clientSecret }}
+                scope: openid
+            provider:
+              keycloak:
+                token-uri: {{ .Values.global.keycloak.tokenUri }}
+    resilience4j:
+      timelimiter:
+        configs:
+          default:
+            timeout-duration: 10s

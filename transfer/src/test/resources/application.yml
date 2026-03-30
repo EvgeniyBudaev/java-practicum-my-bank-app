@@ -1,0 +1,3 @@
+bank:
+  security:
+    enabled: false
