@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name }}-notifications-test
+  labels:
+    app: notifications
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: notifications-test
+      image: busybox:1.36
+      command:
+        - /bin/sh
+        - -c
+        - wget -qO- --timeout=5 http://notifications:{{ .Values.service.port }}/actuator/health | grep -q '"status"'
+  restartPolicy: Never

@@ -1,0 +1,32 @@
+replicaCount: 1
+
+image:
+  repository: my-bank-app/accounts
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  containerPort: 8082
+
+database:
+  host: postgres
+  port: 5432
+  name: bank
+  user: bank
+  password: bank
+
+security:
+  enabled: true
+  oauth2:
+    clientId: accounts-service
+    clientSecret: accounts-service-secret
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

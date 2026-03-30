@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-notifications
+  labels:
+    app: notifications
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: notifications
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: notifications
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: notifications
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.containerPort }}
+              name: http
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-notifications-config
+          volumeMounts:
+            - name: app-config
+              mountPath: /app/config
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: {{ .Values.service.containerPort }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: {{ .Values.service.containerPort }}
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: app-config
+          configMap:
+            name: {{ .Release.Name }}-notifications-config
+            items:
+              - key: application.yml
+                path: application.yml
