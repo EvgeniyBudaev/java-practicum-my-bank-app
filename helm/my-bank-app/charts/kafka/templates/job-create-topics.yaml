@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-kafka-init-topics
+  labels:
+    app: kafka
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      labels:
+        app: kafka-init-topics
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: kafka-init-topics
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command:
+            - /bin/bash
+            - -c
+            - |
+              echo "Waiting for Kafka broker to become ready..."
+              until /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:{{ .Values.service.port }} --list > /dev/null 2>&1; do
+                sleep 5
+              done
+              echo "Kafka is ready. Creating topic {{ .Values.topic.name }}..."
+              /opt/kafka/bin/kafka-topics.sh --create --if-not-exists \
+                --bootstrap-server kafka:{{ .Values.service.port }} \
+                --topic {{ .Values.topic.name }} \
+                --partitions {{ .Values.topic.partitions }} \
+                --replication-factor {{ .Values.topic.replicationFactor }} \
+                --config retention.ms={{ .Values.topic.retentionMs }}
+              echo "Topic {{ .Values.topic.name }} is ready."
+      restartPolicy: OnFailure

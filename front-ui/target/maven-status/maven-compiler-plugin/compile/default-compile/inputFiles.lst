@@ -1,0 +1,14 @@
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/MyBankFrontAppApplication.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/client/GatewayApiClient.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/client/GatewayProperties.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/client/GatewayRestClientConfig.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/client/OAuthTokenService.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/client/dto/AccountMeResponse.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/client/dto/ApiErrorResponse.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/client/dto/CashRequest.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/client/dto/EditAccountRequest.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/client/dto/TransferRequest.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/controller/MainController.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/controller/dto/AccountDto.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/controller/dto/CashAction.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/front-ui/src/main/java/ru/yandex/practicum/mybankfront/security/SecurityConfig.java

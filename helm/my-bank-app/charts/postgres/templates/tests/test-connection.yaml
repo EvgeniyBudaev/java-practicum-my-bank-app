@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name }}-postgres-test
+  labels:
+    app: postgres
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: postgres-test
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      command:
+        - /bin/sh
+        - -c
+        - |
+          pg_isready -h postgres -p {{ .Values.service.port }} -U {{ .Values.databases.bank.user }} &&
+          PGPASSWORD={{ .Values.databases.bank.password }} psql -h postgres -p {{ .Values.service.port }} -U {{ .Values.databases.bank.user }} -d {{ .Values.databases.bank.name }} -c "SELECT 1" &&
+          PGPASSWORD={{ .Values.databases.keycloak.password }} psql -h postgres -p {{ .Values.service.port }} -U {{ .Values.databases.keycloak.user }} -d {{ .Values.databases.keycloak.name }} -c "SELECT 1"
+  restartPolicy: Never

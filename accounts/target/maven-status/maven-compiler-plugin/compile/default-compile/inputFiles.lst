@@ -1,0 +1,17 @@
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/AccountsApplication.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/api/AccountsController.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/api/ApiExceptionHandler.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/api/InternalAccountsController.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/api/dto/AccountMeResponse.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/api/dto/ApiErrorResponse.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/api/dto/BalanceChangeRequest.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/api/dto/EditAccountRequest.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/api/dto/RecipientDto.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/client/KafkaNotificationsClient.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/client/KafkaTopicProperties.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/client/NotificationsClient.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/model/Account.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/repo/AccountRepository.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/security/SecurityConfig.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/service/AccountService.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module11/java-practicum-my-bank-app/accounts/src/main/java/ru/yandex/practicum/bank/accounts/service/NotEnoughFundsException.java
