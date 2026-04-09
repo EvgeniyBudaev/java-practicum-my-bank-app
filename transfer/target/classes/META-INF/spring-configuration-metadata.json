@@ -1,0 +1,20 @@
+{
+  "groups": [
+    {
+      "name": "bank.kafka.topic",
+      "type": "ru.yandex.practicum.bank.transfer.client.KafkaTopicProperties",
+      "sourceType": "ru.yandex.practicum.bank.transfer.client.KafkaTopicProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "bank.kafka.topic.notifications",
+      "type": "java.lang.String",
+      "sourceType": "ru.yandex.practicum.bank.transfer.client.KafkaTopicProperties"
+    }
+  ],
+  "hints": [],
+  "ignored": {
+    "properties": []
+  }
+}
