@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-notifications-config
+  labels:
+    app: notifications
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  KAFKA_BOOTSTRAP_SERVERS: {{ .Values.global.kafka.bootstrapServers }}
+  SPRING_CONFIG_ADDITIONAL_LOCATION: /app/config/
+  application.yml: |
+    spring:
+      main:
+        web-application-type: none
+      kafka:
+        consumer:
+          group-id: notifications-group
+          auto-offset-reset: earliest
+          enable-auto-commit: false
+          key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+          value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+          properties:
+            spring.json.trusted.packages: "ru.yandex.practicum.bank.common.dto"
+            spring.json.use.type.headers: false
+            spring.json.value.default.type: ru.yandex.practicum.bank.common.dto.NotificationEvent
+        listener:
+          ack-mode: manual_immediate
+    bank:
+      kafka:
+        topic:
+          notifications: bank.notifications

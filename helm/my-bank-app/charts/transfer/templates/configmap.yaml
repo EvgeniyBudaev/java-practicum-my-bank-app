@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-transfer-config
+  labels:
+    app: transfer
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  SERVER_PORT: {{ .Values.service.port | quote }}
+  BANK_SECURITY_ENABLED: {{ .Values.security.enabled | quote }}
+  KAFKA_BOOTSTRAP_SERVERS: {{ .Values.global.kafka.bootstrapServers }}
+  SPRING_CONFIG_ADDITIONAL_LOCATION: /app/config/
+  application.yml: |
+    spring:
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              issuer-uri: {{ .Values.global.keycloak.issuerUri }}
+              jwk-set-uri: {{ .Values.global.keycloak.jwkSetUri }}
+          client:
+            registration:
+              transfer-service:
+                provider: keycloak
+                authorization-grant-type: client_credentials
+                client-id: {{ .Values.security.oauth2.clientId }}
+                client-secret: {{ .Values.security.oauth2.clientSecret }}
+                scope: openid
+            provider:
+              keycloak:
+                token-uri: {{ .Values.global.keycloak.tokenUri }}
+      kafka:
+        producer:
+          acks: all
+          retries: 3
+          key-serializer: org.apache.kafka.common.serialization.StringSerializer
+          value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+          properties:
+            enable.idempotence: true
+            spring.json.add.type.headers: false
+    resilience4j:
+      timelimiter:
+        configs:
+          default:
+            timeout-duration: 10s
+    bank:
+      kafka:
+        topic:
+          notifications: bank.notifications

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: gateway
+description: API Gateway subchart for My Bank application (Spring Cloud Gateway)
+type: application
+version: 0.1.0
+appVersion: "0.0.1-SNAPSHOT"

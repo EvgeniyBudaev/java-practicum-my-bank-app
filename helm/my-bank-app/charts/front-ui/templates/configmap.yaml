@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-front-ui-config
+  labels:
+    app: front-ui
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  SERVER_PORT: {{ .Values.service.port | quote }}
+  BANK_SECURITY_ENABLED: {{ .Values.security.enabled | quote }}
+  BANK_GATEWAY_BASE_URL: "http://{{ .Values.global.services.gateway.host }}:{{ .Values.global.services.gateway.port }}"
+  SPRING_CONFIG_ADDITIONAL_LOCATION: /app/config/
+  application.yml: |
+    spring:
+      security:
+        oauth2:
+          client:
+            registration:
+              front-ui:
+                provider: keycloak
+                client-id: {{ .Values.security.oauth2.clientId }}
+                client-secret: {{ .Values.security.oauth2.clientSecret }}
+                authorization-grant-type: authorization_code
+                redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+                scope: openid,profile,email
+            provider:
+              keycloak:
+                authorization-uri: {{ .Values.global.keycloak.issuerUri }}/protocol/openid-connect/auth
+                token-uri: {{ .Values.global.keycloak.tokenUri }}
+                user-info-uri: http://{{ .Values.global.keycloak.host }}:{{ .Values.global.keycloak.httpPort }}/realms/{{ .Values.global.keycloak.realmName }}/protocol/openid-connect/userinfo
+                jwk-set-uri: {{ .Values.global.keycloak.jwkSetUri }}
+                user-name-attribute: preferred_username

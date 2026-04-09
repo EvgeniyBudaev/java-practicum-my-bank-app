@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name }}-kafka-test
+  labels:
+    app: kafka
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: kafka-test
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+      command:
+        - /bin/bash
+        - -c
+        - |
+          /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:{{ .Values.service.port }} --list &&
+          /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:{{ .Values.service.port }} --describe --topic {{ .Values.topic.name }}
+  restartPolicy: Never

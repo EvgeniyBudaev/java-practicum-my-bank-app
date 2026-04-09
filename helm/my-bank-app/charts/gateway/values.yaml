@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: my-bank-app/gateway
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 8081
+  nodePort: 30081
+
+security:
+  enabled: true
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
