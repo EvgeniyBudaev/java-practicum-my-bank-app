@@ -1,0 +1,47 @@
+elasticsearch:
+  image:
+    repository: docker.elastic.co/elasticsearch/elasticsearch
+    tag: "8.15.0"
+    pullPolicy: IfNotPresent
+  service:
+    port: 9200
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+logstash:
+  image:
+    repository: docker.elastic.co/logstash/logstash
+    tag: "8.15.0"
+    pullPolicy: IfNotPresent
+  kafka:
+    topic: bank.logs
+    groupId: logstash
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+kibana:
+  image:
+    repository: docker.elastic.co/kibana/kibana
+    tag: "8.15.0"
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 5601
+    nodePort: 30601
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi

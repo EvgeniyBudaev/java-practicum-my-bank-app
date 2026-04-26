@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: my-bank-app/notifications
+  tag: latest
+  pullPolicy: IfNotPresent
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

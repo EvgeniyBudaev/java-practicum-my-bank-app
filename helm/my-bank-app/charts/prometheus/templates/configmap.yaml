@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-prometheus-config
+  labels:
+    app: prometheus
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: {{ .Values.scrapeInterval }}
+      evaluation_interval: {{ .Values.evaluationInterval }}
+
+    rule_files:
+      - /etc/prometheus/alerts.yml
+
+    scrape_configs:
+      - job_name: 'accounts'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['accounts:{{ .Values.global.services.accounts.port }}']
+            labels:
+              application: accounts
+
+      - job_name: 'cash'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['cash:{{ .Values.global.services.cash.port }}']
+            labels:
+              application: cash
+
+      - job_name: 'transfer'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['transfer:{{ .Values.global.services.transfer.port }}']
+            labels:
+              application: transfer
+
+      - job_name: 'gateway'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['gateway:{{ .Values.global.services.gateway.port }}']
+            labels:
+              application: gateway
+
+      - job_name: 'front-ui'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['front-ui:{{ .Values.global.services.frontUi.port }}']
+            labels:
+              application: front-ui
+
+      - job_name: 'notifications'
+        metrics_path: '/actuator/prometheus'
+        static_configs:
+          - targets: ['notifications:8085']
+            labels:
+              application: notifications
+
+  alerts.yml: |
+    groups:
+      - name: bank-http-alerts
+        rules:
+          - alert: HighErrorRate
+            expr: rate(http_server_requests_seconds_count{status=~"5.."}[5m]) > 0.1
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "High 5xx error rate on {{ "{{" }} $labels.application {{ "}}" }}"
+              description: "Service {{ "{{" }} $labels.application {{ "}}" }} has 5xx rate > 0.1 req/s for 2 minutes"
+
+          - alert: SlowRequests
+            expr: histogram_quantile(0.95, rate(http_server_requests_seconds_bucket[5m])) > 2
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Slow responses on {{ "{{" }} $labels.application {{ "}}" }}"
+              description: "95th percentile latency > 2s on {{ "{{" }} $labels.application {{ "}}" }}"
+
+          - alert: HighRequestErrorRatio
+            expr: |
+              rate(http_server_requests_seconds_count{status=~"4.."}[5m])
+              /
+              rate(http_server_requests_seconds_count[5m]) > 0.2
+            for: 3m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High 4xx ratio on {{ "{{" }} $labels.application {{ "}}" }}"
+              description: "More than 20% of requests return 4xx on {{ "{{" }} $labels.application {{ "}}" }}"
+
+      - name: bank-business-alerts
+        rules:
+          - alert: HighWithdrawalFailures
+            expr: increase(bank_cash_withdrawal_failed_total[10m]) > 5
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Multiple failed withdrawals detected"
+              description: "More than 5 failed cash withdrawals in the last 10 minutes"
+
+          - alert: HighTransferFailures
+            expr: increase(bank_transfer_failed_total[10m]) > 5
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Multiple failed transfers detected"
+              description: "More than 5 failed transfers in the last 10 minutes"
+
+          - alert: NotificationServiceErrors
+            expr: increase(bank_notification_send_failed_total[5m]) > 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Notification send failures detected"
+              description: "Notification service is unable to process events"
+
+      - name: bank-jvm-alerts
+        rules:
+          - alert: HighHeapUsage
+            expr: |
+              jvm_memory_used_bytes{area="heap"}
+              /
+              jvm_memory_max_bytes{area="heap"} > 0.85
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High JVM heap usage on {{ "{{" }} $labels.application {{ "}}" }}"
+              description: "JVM heap usage > 85% on {{ "{{" }} $labels.application {{ "}}" }}"

@@ -1,0 +1,25 @@
+replicaCount: 1
+
+image:
+  repository: my-bank-app/front-ui
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 8080
+  nodePort: 30080
+
+security:
+  enabled: true
+  oauth2:
+    clientId: front-ui
+    clientSecret: ""
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

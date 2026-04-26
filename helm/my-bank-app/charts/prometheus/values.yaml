@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: prom/prometheus
+  tag: "v2.54.1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 9090
+  nodePort: 30090
+
+scrapeInterval: 15s
+evaluationInterval: 15s
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
