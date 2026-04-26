@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-kibana-config
+  labels:
+    app: kibana
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  kibana.yml: |
+    server.host: 0.0.0.0
+    server.name: kibana
+    elasticsearch.hosts: ["http://elasticsearch:{{ .Values.elasticsearch.service.port }}"]
+    monitoring.ui.container.elasticsearch.enabled: false
+    xpack.security.enabled: false

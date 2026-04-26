@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="appName"               source="spring.application.name"       defaultValue="unknown"/>
+    <springProperty scope="context" name="kafkaBootstrapServers" source="spring.kafka.bootstrap-servers" defaultValue="localhost:9092"/>
+    <springProperty scope="context" name="kafkaLogTopic"         source="bank.kafka.topic.logs"          defaultValue="bank.logs"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"application":"${appName}"}</customFields>
+            <includeContext>false</includeContext>
+        </encoder>
+    </appender>
+
+    <appender name="KAFKA" class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"application":"${appName}"}</customFields>
+            <includeContext>false</includeContext>
+        </encoder>
+        <topic>${kafkaLogTopic}</topic>
+        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy"/>
+        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
+        <producerConfig>bootstrap.servers=${kafkaBootstrapServers}</producerConfig>
+        <producerConfig>acks=0</producerConfig>
+        <producerConfig>linger.ms=100</producerConfig>
+        <producerConfig>max.block.ms=500</producerConfig>
+        <appender-ref ref="CONSOLE"/>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="KAFKA"/>
+    </root>
+
+    <logger name="ru.yandex.practicum.bank" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="KAFKA"/>
+    </logger>
+
+    <logger name="org.springframework.security" level="WARN"/>
+    <logger name="org.springframework.web"      level="INFO"/>
+    <logger name="org.hibernate"                level="WARN"/>
+</configuration>

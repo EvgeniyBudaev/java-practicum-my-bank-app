@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-logstash-config
+  labels:
+    app: logstash
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  logstash.conf: |
+    input {
+      kafka {
+        bootstrap_servers => "{{ .Values.global.kafka.bootstrapServers }}"
+        topics => ["{{ .Values.logstash.kafka.topic }}"]
+        codec => json
+        group_id => "{{ .Values.logstash.kafka.groupId }}"
+        auto_offset_reset => "earliest"
+      }
+    }
+
+    filter {
+      if [logger_name] =~ /^org\.springframework/ and [level] == "DEBUG" {
+        drop {}
+      }
+
+      mutate {
+        gsub => [
+          "message", "[0-9]{16,20}", "****ACCOUNT****",
+          "message", "(?i)(password|secret|token)([=: ]+)[^\s,}&\"]+", "\1\2****"
+        ]
+      }
+
+      if [timestamp] {
+        date {
+          match  => ["timestamp", "ISO8601"]
+          target => "@timestamp"
+          remove_field => ["timestamp"]
+        }
+      }
+
+      if ![application] and [logger_name] {
+        mutate {
+          add_field => { "application" => "unknown" }
+        }
+      }
+    }
+
+    output {
+      elasticsearch {
+        hosts => ["elasticsearch:{{ .Values.elasticsearch.service.port }}"]
+        index => "bank-logs-%{[application]}-%{+YYYY.MM.dd}"
+      }
+    }
+
+  logstash.yml: |
+    http.host: 0.0.0.0
+    pipeline.workers: 1
+    pipeline.batch.size: 125
+    pipeline.batch.delay: 50

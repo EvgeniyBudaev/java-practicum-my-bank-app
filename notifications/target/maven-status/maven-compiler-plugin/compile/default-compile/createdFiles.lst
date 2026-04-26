@@ -1,0 +1,3 @@
+ru/yandex/practicum/bank/notifications/config/KafkaTopicProperties.class
+ru/yandex/practicum/bank/notifications/kafka/NotificationListener.class
+ru/yandex/practicum/bank/notifications/NotificationsApplication.class

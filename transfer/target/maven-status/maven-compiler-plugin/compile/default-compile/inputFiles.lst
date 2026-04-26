@@ -1,0 +1,14 @@
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/TransferApplication.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/api/ApiExceptionHandler.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/api/TransferController.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/api/dto/ApiErrorResponse.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/api/dto/TransferRequest.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/client/AccountsClient.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/client/KafkaNotificationsClient.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/client/KafkaTopicProperties.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/client/NoopAccountsClient.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/client/NotificationsClient.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/client/OAuth2WebClientConfig.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/client/OAuthAccountsClient.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/security/SecurityConfig.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/transfer/src/main/java/ru/yandex/practicum/bank/transfer/service/TransferService.java

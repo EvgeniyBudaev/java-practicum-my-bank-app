@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: grafana/grafana
+  tag: "11.2.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 30300
+
+admin:
+  user: admin
+  password: admin
+
+prometheus:
+  url: http://prometheus:9090
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi

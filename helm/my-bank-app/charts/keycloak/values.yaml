@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/keycloak/keycloak
+  tag: "25.0.6"
+  pullPolicy: IfNotPresent
+
+admin:
+  username: admin
+  password: admin
+
+database:
+  host: postgres
+  port: 5432
+  name: keycloak
+  user: keycloak
+  password: keycloak
+
+service:
+  type: NodePort
+  port: 8080
+  nodePort: 30088
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi

@@ -1,0 +1,174 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-grafana-dashboard-jvm
+  labels:
+    app: grafana
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+data:
+  jvm-metrics.json: |
+    {
+      "id": null,
+      "uid": "bank-jvm-metrics",
+      "title": "Bank App - JVM Metrics",
+      "tags": ["bank", "jvm"],
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "30s",
+      "time": { "from": "now-1h", "to": "now" },
+      "panels": [
+        {
+          "id": 1,
+          "title": "Heap Memory Used vs Max",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+          "targets": [
+            {
+              "expr": "jvm_memory_used_bytes{area=\"heap\"}",
+              "legendFormat": "Used {{ "{{" }}application{{ "}}" }}"
+            },
+            {
+              "expr": "jvm_memory_max_bytes{area=\"heap\"}",
+              "legendFormat": "Max {{ "{{" }}application{{ "}}" }}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "bytes", "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 2,
+          "title": "Non-Heap Memory Used",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+          "targets": [
+            {
+              "expr": "jvm_memory_used_bytes{area=\"nonheap\"}",
+              "legendFormat": "{{ "{{" }}application{{ "}}" }} {{ "{{" }}id{{ "}}" }}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "bytes", "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 3,
+          "title": "CPU Usage",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+          "targets": [
+            {
+              "expr": "process_cpu_usage",
+              "legendFormat": "Process {{ "{{" }}application{{ "}}" }}"
+            },
+            {
+              "expr": "system_cpu_usage",
+              "legendFormat": "System {{ "{{" }}application{{ "}}" }}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "percentunit", "min": 0, "max": 1, "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 4,
+          "title": "Live Threads",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+          "targets": [
+            {
+              "expr": "jvm_threads_live_threads",
+              "legendFormat": "Live {{ "{{" }}application{{ "}}" }}"
+            },
+            {
+              "expr": "jvm_threads_daemon_threads",
+              "legendFormat": "Daemon {{ "{{" }}application{{ "}}" }}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "short", "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 5,
+          "title": "GC Pause Time",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+          "targets": [
+            {
+              "expr": "rate(jvm_gc_pause_seconds_sum[1m])",
+              "legendFormat": "{{ "{{" }}application{{ "}}" }} {{ "{{" }}cause{{ "}}" }}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "s", "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 6,
+          "title": "GC Collections per Second",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+          "targets": [
+            {
+              "expr": "rate(jvm_gc_pause_seconds_count[1m])",
+              "legendFormat": "{{ "{{" }}application{{ "}}" }} {{ "{{" }}action{{ "}}" }}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "ops", "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 7,
+          "title": "Loaded Classes",
+          "type": "timeseries",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+          "targets": [
+            {
+              "expr": "jvm_classes_loaded_classes",
+              "legendFormat": "{{ "{{" }}application{{ "}}" }}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "short", "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 8,
+          "title": "Heap Usage %",
+          "type": "gauge",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+          "targets": [
+            {
+              "expr": "jvm_memory_used_bytes{area=\"heap\"} / jvm_memory_max_bytes{area=\"heap\"} * 100",
+              "legendFormat": "{{ "{{" }}application{{ "}}" }}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percent",
+              "min": 0,
+              "max": 100,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 70 },
+                  { "color": "red", "value": 85 }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }

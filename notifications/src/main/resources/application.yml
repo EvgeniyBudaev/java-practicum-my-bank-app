@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: notifications
+  main:
+    web-application-type: none
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: notifications-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "ru.yandex.practicum.bank.common.dto"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: ru.yandex.practicum.bank.common.dto.NotificationEvent
+    listener:
+      ack-mode: manual_immediate
+
+management:
+  server:
+    port: ${MANAGEMENT_PORT:8085}
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  tracing:
+    sampling:
+      probability: ${TRACING_SAMPLING_PROBABILITY:1.0}
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://localhost:9411/api/v2/spans}
+
+bank:
+  kafka:
+    topic:
+      notifications: bank.notifications
+      logs: bank.logs

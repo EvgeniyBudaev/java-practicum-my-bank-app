@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name }}-elk-test
+  labels:
+    app: elk
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: elasticsearch-test
+      image: busybox:1.36
+      command:
+        - /bin/sh
+        - -c
+        - |
+          wget -qO- --timeout=10 http://elasticsearch:{{ .Values.elasticsearch.service.port }}/_cluster/health | grep -q '"status"'
+          wget -qO- --timeout=10 http://kibana:{{ .Values.kibana.service.port }}/api/status | grep -q '"name"'
+  restartPolicy: Never

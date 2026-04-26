@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-grafana
+  labels:
+    app: grafana
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: grafana
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: grafana
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: grafana
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              name: http
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              value: {{ .Values.admin.user | quote }}
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              value: {{ .Values.admin.password | quote }}
+            - name: GF_AUTH_ANONYMOUS_ENABLED
+              value: "false"
+            - name: GF_PATHS_PROVISIONING
+              value: /etc/grafana/provisioning
+          volumeMounts:
+            - name: grafana-datasource
+              mountPath: /etc/grafana/provisioning/datasources
+            - name: grafana-dashboard-provider
+              mountPath: /etc/grafana/provisioning/dashboards
+            - name: grafana-dashboard-http
+              mountPath: /var/lib/grafana/dashboards/http-metrics.json
+              subPath: http-metrics.json
+            - name: grafana-dashboard-jvm
+              mountPath: /var/lib/grafana/dashboards/jvm-metrics.json
+              subPath: jvm-metrics.json
+            - name: grafana-dashboard-business
+              mountPath: /var/lib/grafana/dashboards/business-metrics.json
+              subPath: business-metrics.json
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: grafana-datasource
+          configMap:
+            name: {{ .Release.Name }}-grafana-datasource
+        - name: grafana-dashboard-provider
+          configMap:
+            name: {{ .Release.Name }}-grafana-dashboard-provider
+        - name: grafana-dashboard-http
+          configMap:
+            name: {{ .Release.Name }}-grafana-dashboard-http
+        - name: grafana-dashboard-jvm
+          configMap:
+            name: {{ .Release.Name }}-grafana-dashboard-jvm
+        - name: grafana-dashboard-business
+          configMap:
+            name: {{ .Release.Name }}-grafana-dashboard-business

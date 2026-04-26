@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name }}-front-ui-test
+  labels:
+    app: front-ui
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: front-ui-test
+      image: busybox:1.36
+      command:
+        - /bin/sh
+        - -c
+        - wget -qO- --timeout=5 http://front-ui:{{ .Values.service.port }}/actuator/health | grep -q '"status"'
+  restartPolicy: Never
