@@ -1,0 +1,3 @@
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/notifications/src/main/java/ru/yandex/practicum/bank/notifications/NotificationsApplication.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/notifications/src/main/java/ru/yandex/practicum/bank/notifications/config/KafkaTopicProperties.java
+/home/ebudaev/Documents/Others/MyProjects/Yandex/module12/java-practicum-my-bank-app/notifications/src/main/java/ru/yandex/practicum/bank/notifications/kafka/NotificationListener.java
